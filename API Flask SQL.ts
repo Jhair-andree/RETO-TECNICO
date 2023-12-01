@@ -1,12 +1,26 @@
 import * as request from 'supertest';
 import app from './app'; // Importa tu aplicación Express
+import { createConnection, getConnection, getRepository } from 'typeorm';
+import { User } from './entities/User';
 import faker from 'faker';
 
-describe('API Tests', () => {
-  beforeAll(() => {
-    process.env.NODE_ENV = 'test';
+beforeAll(async () => {
+  process.env.NODE_ENV = 'test';
+  await createConnection({
+    type: 'sqlite',
+    database: ':memory:',
+    synchronize: true,
+    dropSchema: true,
+    entities: [User],
   });
+});
 
+afterAll(async () => {
+  const connection = getConnection();
+  await connection.close();
+});
+
+describe('API Tests', () => {
   it('should add a user', async () => {
     const randomUsername = faker.internet.userName();
     const randomEmail = faker.internet.email();
@@ -20,6 +34,7 @@ describe('API Tests', () => {
   });
 
   it('should get users', async () => {
+    // Agrega un usuario aleatorio para probar la obtención de usuarios
     const randomUsername = faker.internet.userName();
     const randomEmail = faker.internet.email();
 
