@@ -1,0 +1,22 @@
+// transformador.test.ts
+import { transformarAEspanol } from './transformador';
+
+describe('Transformador de API SWAPI', () => {
+  test('Transformar datos en inglés a español', () => {
+    const datosEnIngles = { name: 'Luke', height: '172', mass: '77' };
+    const datosEsperados = { nombre: 'Luke', altura: '172', masa: '77' };
+
+    const datosTransformados = transformarAEspanol(datosEnIngles);
+
+    expect(datosTransformados).toEqual(datosEsperados);
+  });
+
+  test('Transformar datos en inglés con atributos faltantes', () => {
+    const datosEnIngles = { name: 'Leia', gender: 'female' };
+    const datosEsperados = { nombre: 'Leia', gender: 'female' };
+
+    const datosTransformados = transformarAEspanol(datosEnIngles);
+
+    expect(datosTransformados).toEqual(datosEsperados);
+  });
+});
